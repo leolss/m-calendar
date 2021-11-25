@@ -1,35 +1,37 @@
-import * as React from 'react';
-import PropsType from './DatePickerProps';
-import Component from './DatePicker.base';
-import WeekPanel from './date/WeekPanel';
-import SingleMonth from './date/SingleMonth';
-import { Models } from './date/DataTypes';
+import * as React from "react";
+import PropsType from "./DatePickerProps";
+import Component from "./DatePicker.base";
+import WeekPanel from "./date/WeekPanel";
+import SingleMonth from "./date/SingleMonth";
+import { Models } from "./date/DataTypes";
 
 export { PropsType };
 export default class DatePicker extends Component {
-
   panel: HTMLDivElement;
-  transform: string = '';
+  transform: string = "";
 
   genMonthComponent = (data?: Models.MonthData) => {
     if (!data) return;
 
-    return <SingleMonth key={data.title}
-      locale={this.props.locale || {} as Models.Locale}
-      monthData={data}
-      rowSize={this.props.rowSize}
-      onCellClick={this.onCellClick}
-      getDateExtra={this.props.getDateExtra}
-      ref={(dom) => {
-        // FIXME?: sometimes will callback twice, and the second is null, when use preact.
-        data.componentRef = dom || data.componentRef || undefined;
-        data.updateLayout = () => {
-          this.computeHeight(data, dom);
-        };
-        data.updateLayout();
-      }}
-    />;
-  }
+    return (
+      <SingleMonth
+        key={data.title}
+        locale={this.props.locale || ({} as Models.Locale)}
+        monthData={data}
+        rowSize={this.props.rowSize}
+        onCellClick={this.onCellClick}
+        getDateExtra={this.props.getDateExtra}
+        ref={(dom) => {
+          // FIXME?: sometimes will callback twice, and the second is null, when use preact.
+          data.componentRef = dom || data.componentRef || undefined;
+          data.updateLayout = () => {
+            this.computeHeight(data, dom);
+          };
+          data.updateLayout();
+        }}
+      />
+    );
+  };
 
   computeHeight = (data: Models.MonthData, singleMonth: SingleMonth | null) => {
     if (singleMonth && singleMonth.wrapperDivDOM) {
@@ -41,7 +43,7 @@ export default class DatePicker extends Component {
       data.height = singleMonth.wrapperDivDOM.clientHeight || data.height || 0;
       data.y = singleMonth.wrapperDivDOM.offsetTop || data.y || 0;
     }
-  }
+  };
 
   setLayout = (dom: HTMLDivElement) => {
     if (dom) {
@@ -57,11 +59,11 @@ export default class DatePicker extends Component {
         });
       };
     }
-  }
+  };
 
   setPanel = (dom: HTMLDivElement) => {
     this.panel = dom;
-  }
+  };
 
   // tslint:disable-next-line:member-ordering
   touchHandler = (() => {
@@ -92,19 +94,56 @@ export default class DatePicker extends Component {
         }
       },
 
-      onTouchEnd: () => {
-        this.touchHandler.onFinish();
+      onTouchEnd: (type: string) => {
+        //this.touchHandler.onFinish();
+        if (type === "onPrev") {
+          this.touchHandler.onPrev();
+        }
+        if (type === "onNext") {
+          this.touchHandler.onNext();
+        }
       },
 
       onTouchCancel: () => {
         this.touchHandler.onFinish();
       },
 
+      onPrev: () => {
+        if (this.canLoadPrev()) {
+          this.genMonthData(this.state.months[0].firstDate, -1);
+          this.visibleMonth = this.state.months.slice(
+            0,
+            this.props.initalMonths
+          );
+          this.state.months.forEach((m) => {
+            m.updateLayout && m.updateLayout();
+          });
+          this.forceUpdate();
+        }
+      },
+
+      onNext: () => {
+        if (this.canLoadNext()) {
+          this.genMonthData(this.state.months[0].firstDate, 1);
+          this.visibleMonth = this.state.months.slice(
+            0,
+            this.props.initalMonths
+          );
+          this.state.months.forEach((m) => {
+            m.updateLayout && m.updateLayout();
+          });
+          this.forceUpdate();
+        }
+      },
+
       onFinish: () => {
         if (delta > 40 && this.canLoadPrev()) {
           this.genMonthData(this.state.months[0].firstDate, -1);
 
-          this.visibleMonth = this.state.months.slice(0, this.props.initalMonths);
+          this.visibleMonth = this.state.months.slice(
+            0,
+            this.props.initalMonths
+          );
 
           this.state.months.forEach((m) => {
             m.updateLayout && m.updateLayout();
@@ -112,11 +151,11 @@ export default class DatePicker extends Component {
           this.forceUpdate();
         }
         this.setTransform(this.panel.style, `translate3d(0,0,0)`);
-        this.setTransition(this.panel.style, '.3s');
+        this.setTransition(this.panel.style, ".3s");
         setTimeout(() => {
-          this.panel && this.setTransition(this.panel.style, '');
+          this.panel && this.setTransition(this.panel.style, "");
         }, 300);
-      }
+      },
     };
   })();
 
@@ -132,7 +171,7 @@ export default class DatePicker extends Component {
   }
 
   render() {
-    const { prefixCls = '', locale = {} as Models.Locale } = this.props;
+    const { prefixCls = "", locale = {} as Models.Locale } = this.props;
     const style: any = {
       transform: this.transform,
     };
@@ -140,28 +179,39 @@ export default class DatePicker extends Component {
     return (
       <div className={`${prefixCls} date-picker`}>
         <WeekPanel locale={locale} />
-        <div className="wrapper" style={{
-          overflowX: 'hidden',
-          overflowY: 'visible',
-        }} ref={this.setLayout}
-          onTouchStart={this.touchHandler.onTouchStart}
-          onTouchMove={this.touchHandler.onTouchMove}
-          onTouchEnd={this.touchHandler.onTouchEnd}
-          onTouchCancel={this.touchHandler.onTouchCancel}>
+        <div
+          className="wrapper"
+          style={{
+            overflowX: "hidden",
+            overflowY: "visible",
+          }}
+          ref={this.setLayout}
+          //onTouchStart={this.touchHandler.onTouchStart}
+          //onTouchMove={this.touchHandler.onTouchMove}
+          //onTouchEnd={this.touchHandler.onTouchEnd}
+          //onTouchCancel={this.touchHandler.onTouchCancel}
+        >
           <div style={style} ref={this.setPanel}>
-            {
-              this.canLoadPrev() && <div className="load-tip">{locale.loadPrevMonth}</div>
-            }
+            {this.canLoadPrev() && (
+              <div className="load-tip">{locale.loadPrevMonth}</div>
+            )}
+            <div className="month-change">
+              <img
+                src="http://storage.360buyimg.com/jdd-web-yinp/image/icon/prev.svg?Expires=3785307709&AccessKey=2pD6LmpoRGa4Z7wB&Signature=plaKrpe7G9gSezn4nNOFn%2B0LkpE%3D"
+                className="prev-button"
+                onTouchEnd={() => this.touchHandler.onTouchEnd("onPrev")}
+              ></img>
+              <span>{this.state.months[0].title}</span>
+              <img
+                src="http://storage.360buyimg.com/jdd-web-yinp/image/icon/next.svg?Expires=3785307672&AccessKey=2pD6LmpoRGa4Z7wB&Signature=dr0Z%2FUdLaR9RzeHSYXwxUgxlZWg%3D"
+                className="next-button"
+                onTouchEnd={() => this.touchHandler.onTouchEnd("onNext")}
+              />
+            </div>
             <div className="months">
-              {
-                this.state.months.map((m) => {
-                  const hidden = m.height && this.visibleMonth.indexOf(m) < 0;
-                  if (hidden) {
-                    return <div key={m.title + '_shallow'} style={{ height: m.height }}></div>;
-                  }
-                  return m.component;
-                })
-              }
+              {this.state.months.map((m) => {
+                return m.component;
+              })}
             </div>
           </div>
         </div>

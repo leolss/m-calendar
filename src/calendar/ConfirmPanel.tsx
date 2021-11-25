@@ -1,3 +1,11 @@
+/*
+ * @Author: 李闪闪
+ * @Date: 2021-11-23 16:27:49
+ * @Email: lishanshan6@jd.com
+ * @LastEditors: 李闪闪
+ * @LastEditTime: 2021-11-25 15:47:18
+ * @Description: 
+ */
 import * as React from 'react';
 import { formatDate } from '../util';
 import { Models } from '../date/DataTypes';
@@ -46,13 +54,13 @@ export default class ConfirmPanel extends React.PureComponent<ConfirmPanelPropsT
 
     return (
       <div className="confirm-panel">
-        {
+        {/* {
           type === 'range' &&
           <div className="info">
             <p>{locale.start}: <span className={!startDateTime ? 'grey' : ''}>{startTimeStr}</span></p>
             <p>{locale.end}: <span className={!endDateTime ? 'grey' : ''}>{endTimeStr}</span></p>
           </div>
-        }
+        } */}
         <div className={btnCls} onClick={this.onConfirm}>
           {locale.confirm}
         </div>

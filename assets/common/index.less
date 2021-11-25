@@ -1,11 +1,20 @@
 @prefixClass: rmc-calendar;
 .@{prefixClass} {
-  font-family: Arial, "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Sans Serif", "WenQuanYi Micro Hei", sans-serif;
+  font-family: Arial, "Hiragino Sans GB", "Microsoft Yahei",
+    "Microsoft Sans Serif", "WenQuanYi Micro Hei", sans-serif;
 }
 
 .@{prefixClass}-hidden {
   display: none;
 }
+
+@themeColor: #12ad45;
+@themeButtonColor: linear-gradient(
+  270deg,
+  rgba(18, 173, 69, 1) 0%,
+  rgba(18, 173, 69, 1) 54.24434106730091%,
+  rgba(201, 221, 18, 1) 100%
+);
 
 @import "./Animation.less";
 @import "./Calendar.less";

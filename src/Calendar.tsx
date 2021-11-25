@@ -258,7 +258,6 @@ export default class Calendar extends React.PureComponent<PropsType, StateType> 
               )
             }
             {
-              startDate &&
               <ConfirmPanel
                 type={type}
                 locale={locale}

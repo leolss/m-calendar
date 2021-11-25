@@ -14,7 +14,7 @@ export default abstract class DatePicker extends React.Component<PropsType, Stat
     infinite: false,
     infiniteOpt: false,
     defaultDate: new Date,
-    initalMonths: 6,
+    initalMonths: 1,
     locale: defaultLocale,
   } as PropsType;
 
@@ -50,7 +50,7 @@ export default abstract class DatePicker extends React.Component<PropsType, Stat
   }
 
   componentWillMount() {
-    const { initalMonths = 6, defaultDate } = this.props;
+    const { initalMonths = 1, defaultDate } = this.props;
     for (let i = 0; i < initalMonths; i++) {
       this.canLoadNext() && this.genMonthData(defaultDate, i);
     }
@@ -140,11 +140,12 @@ export default abstract class DatePicker extends React.Component<PropsType, Stat
       weeks,
     } as Models.MonthData;
     data.component = this.genMonthComponent(data);
-    if (addMonth >= 0) {
-      this.state.months.push(data);
-    } else {
-      this.state.months.unshift(data);
-    }
+    // if (addMonth >= 0) {
+    //   this.state.months.push(data);
+    // } else {
+    //   this.state.months.unshift(data);
+    // }
+    this.setState({months: [data]})
     const { startDate, endDate } = this.props;
     if (startDate) {
       this.selectDateRange(startDate, endDate);
