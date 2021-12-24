@@ -1,6 +1,6 @@
 {
-  "name": "rmc-calendar",
-  "version": "1.1.4",
+  "name": "rmc-calendar-jdd",
+  "version": "1.1.5",
   "description": "React Mobile Calendar Component(web and react-native)",
   "keywords": [
     "react",
@@ -8,13 +8,13 @@
     "react-m-calendar",
     "m-calendar"
   ],
-  "homepage": "https://github.com/react-component/m-calendar",
+  "homepage": "https://github.com/leolss/m-calendar",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-component/m-calendar.git"
+    "url": "https://github.com/leolss/m-calendar.git"
   },
   "bugs": {
-    "url": "https://github.com/react-component/m-calendar/issues"
+    "url": "https://github.com/leolss/m-calendar/issues"
   },
   "files": [
     "lib",
