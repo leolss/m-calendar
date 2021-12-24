@@ -57,7 +57,7 @@ react-native run-ios
 
 
 # docs
-
+这是一个在rmc-calendar的基础上修改了皮肤和切换功能的日历
 ## Usage
 ```jsx
 import React, { Component } from 'react';
